@@ -33,6 +33,29 @@ def nqueens(n: Int): Set[List[Int]] = {
 nqueens(4)
 
 
+class Poly(terms0: Map[Int, Double]) {
+  def this(bindings: (Int, Double)*) = this(bindings.toMap)
+  val terms = terms0 withDefaultValue 0.0
+  def +(other: Poly) = new Poly(other.terms foldLeft terms)(addTerm)
+
+  def addTerm(terms: Map[Int, Double], term: (Int, Double)): Map[Int, Double] = {
+    val (exponent, coefficient) = term
+    terms + (exponent -> (coefficient + terms(exponent)))
+  }
+
+  override def toString =
+    (for ((exponent, coefficient) <- terms.toList.sorted.reverse) yield coefficient + "x^" + exponent) mkString " + "
+}
+
+
+val poly1 = new Poly(1 -> 2.0, 3 -> 4.0, 5 -> 6.2)
+val poly2 = new Poly(0 -> 3.0, 3 -> 7.0))
+
+val result = poly1 + poly2
+val result2 = poly1.terms(7)
+
+
+
 
 
 
